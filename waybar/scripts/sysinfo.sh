@@ -6,8 +6,13 @@
 SCRIPT_DIR="$(dirname "$0")"
 source "$SCRIPT_DIR/theme-colors.sh"
 
-# CPU usage
-cpu_usage=$(awk '/^cpu / {usage=100-($5*100/($2+$3+$4+$5+$6+$7+$8))} END {printf "%.0f", usage}' /proc/stat)
+# CPU usage (btop-style delta over 1 second for accuracy)
+read -r _ user1 nice1 sys1 idle1 iowait1 irq1 sirq1 _ < /proc/stat
+sleep 1
+read -r _ user2 nice2 sys2 idle2 iowait2 irq2 sirq2 _ < /proc/stat
+idle_delta=$((idle2 - idle1))
+total_delta=$(( (user2+nice2+sys2+idle2+iowait2+irq2+sirq2) - (user1+nice1+sys1+idle1+iowait1+irq1+sirq1) ))
+cpu_usage=$((100 * (total_delta - idle_delta) / total_delta))
 
 # CPU temp (AMD k10temp)
 cpu_temp=$(sensors 2>/dev/null | awk '/Tctl/ {gsub(/[+°C]/,"",$2); printf "%.0f", $2}')
