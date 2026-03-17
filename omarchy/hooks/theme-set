@@ -1,0 +1,3 @@
+#!/bin/bash
+# Restart waybar when theme changes so colors update immediately
+omarchy-restart-waybar
