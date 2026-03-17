@@ -7,6 +7,8 @@ Inspired by [Dionysus](https://github.com/pewdiepie-archdaemon/dionysus) waybar 
 ## Features
 
 - **Cava Audio Visualizer** - Horizontal bars reacting to audio with volume percentage
+- **Mic Voice Level** - Real-time voice-reactive level bar with percentage
+- **Battery Bar** - Visual battery indicator with charging status (for laptops)
 - **System Monitoring** - CPU, GPU (with VRAM), RAM, Disk usage, and Coolant temperature
 - **Network Speeds** - WiFi/Ethernet icon with live download/upload speeds
 - **Microphone Toggle** - Ctrl+M with audio feedback (beep sounds)
@@ -34,11 +36,13 @@ chmod +x install.sh
 - `waybar` - Status bar
 - `pipewire-pulse` / `pulseaudio` - Audio control
 - `lm_sensors` - Temperature monitoring
+- `sox` - Mic level analysis
+- `alsa-utils` - Audio recording (for mic level)
 - `nvidia-utils` - GPU monitoring (optional, for NVIDIA cards)
 
 Install on Arch:
 ```bash
-sudo pacman -S cava waybar pipewire-pulse lm_sensors nvidia-utils
+sudo pacman -S cava waybar pipewire-pulse lm_sensors sox alsa-utils nvidia-utils
 ```
 
 ## Keybindings
@@ -52,7 +56,9 @@ sudo pacman -S cava waybar pipewire-pulse lm_sensors nvidia-utils
 ## Module Layout
 
 ```
-[ workspaces ] [ window title ]          [ cava ███░░ 70% ] [ CPU GPU RAM Disk Coolant ] [ Net ↓↑ ] [ Mic ] [ Tray ] [ Clock ]
+Left:   [ Omarchy ] [ CPU GPU RAM Disk Coolant ] [ Tray ]
+Center: [ Workspaces ]
+Right:  [ Net ↓↑ ] [ Mic ███░░ 30% ] [ Bluetooth ] [ Cava ███░░ 70% ] [ Battery ███░░ 60% ] [ Tuesday 17/03 March • 14:30:45 ]
 ```
 
 ## Customization
@@ -68,9 +74,10 @@ Change your Omarchy theme and waybar updates automatically!
 ### Scripts
 All scripts are in `~/.config/waybar/scripts/`:
 - `cava-volume.sh` - Audio visualizer + volume
+- `mic-level.sh` - Voice-reactive mic level bar
+- `battery.sh` - Battery bar visualization
 - `sysinfo.sh` - System monitoring
 - `network.sh` - Network speeds
-- `mic.sh` - Microphone status
 - `mic-toggle.sh` - Toggle mic with sound
 
 ## Uninstall

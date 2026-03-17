@@ -26,7 +26,7 @@ fi
 # Check dependencies
 echo "Checking dependencies..."
 MISSING=""
-for cmd in cava waybar pactl pw-play sensors nvidia-smi; do
+for cmd in cava waybar pactl pw-play sensors sox arecord; do
     if ! command -v $cmd &> /dev/null; then
         MISSING="$MISSING $cmd"
     fi
@@ -35,7 +35,7 @@ done
 if [ -n "$MISSING" ]; then
     echo "Missing dependencies:$MISSING"
     echo ""
-    echo "Install with: sudo pacman -S cava waybar pipewire-pulse lm_sensors nvidia-utils"
+    echo "Install with: sudo pacman -S cava waybar pipewire-pulse lm_sensors sox alsa-utils nvidia-utils"
     read -p "Continue anyway? [y/N] " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -87,9 +87,10 @@ else
     echo '  bindd = CTRL, M, Mic toggle, exec, ~/.config/waybar/scripts/mic-toggle.sh'
 fi
 
-# Kill any zombie cava processes and restart waybar
+# Kill any zombie processes and restart waybar
 echo "Restarting waybar..."
 pkill -9 cava 2>/dev/null || true
+pkill -f mic-level.sh 2>/dev/null || true
 sleep 0.3
 
 if command -v omarchy-restart-waybar &> /dev/null; then
@@ -104,10 +105,13 @@ echo ""
 echo "=== Installation complete! ==="
 echo ""
 echo "Features installed:"
-echo "  - Cava audio visualizer with volume"
+echo "  - Cava audio visualizer with volume bar"
+echo "  - Voice-reactive mic level bar"
+echo "  - Battery bar (for laptops)"
 echo "  - System info (CPU, GPU, RAM, Disk, Coolant)"
 echo "  - Network speeds (download/upload)"
 echo "  - Mic toggle with Ctrl+M (with sound feedback)"
 echo "  - Theme-adaptive colors"
+echo "  - Clock with full date and seconds"
 echo ""
 echo "Tip: Waybar auto-restarts when you change Omarchy themes!"
