@@ -7,9 +7,9 @@
   "modules-left": ["custom/omarchy", "clock", "custom/sysinfo", "group/tray-expander"],
   "modules-center": ["hyprland/workspaces"],
   "modules-right": [
+    "custom/network",
     "custom/microphone",
     "bluetooth",
-    "custom/network",
     "custom/cava-volume",
     "battery"
   ],

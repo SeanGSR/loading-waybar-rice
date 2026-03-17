@@ -166,10 +166,6 @@ tooltip label {
 }
 
 /* Network module */
-#custom-network {
-  min-width: 120px;
-}
-
 #custom-network.disconnected {
   color: @color4;
 }
