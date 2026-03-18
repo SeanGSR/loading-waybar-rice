@@ -3,11 +3,11 @@
 
 SOUNDS_DIR="$HOME/.config/waybar/sounds"
 
-# Toggle mute
-pactl set-source-mute @DEFAULT_SOURCE@ toggle
+# Toggle mute (using wpctl for PipeWire/wiremix compatibility)
+wpctl set-mute @DEFAULT_SOURCE@ toggle
 
 # Check new state and play sound
-if pactl get-source-mute @DEFAULT_SOURCE@ | grep -q 'yes'; then
+if wpctl get-volume @DEFAULT_SOURCE@ | grep -q MUTED; then
   pw-play "$SOUNDS_DIR/mic-muted.wav" &
 else
   pw-play "$SOUNDS_DIR/mic-unmuted.wav" &

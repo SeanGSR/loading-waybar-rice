@@ -56,9 +56,6 @@
 }
 
 /* Module styling */
-#cpu,
-#battery,
-#network,
 #bluetooth,
 #clock,
 #custom-omarchy,
@@ -90,9 +87,6 @@
 }
 
 /* Hover effects - subtle */
-#cpu:hover,
-#battery:hover,
-#network:hover,
 #bluetooth:hover,
 #clock:hover,
 #custom-mic-level:hover,
@@ -108,7 +102,7 @@
   margin-right: 8px;
 }
 
-#network {
+#custom-network {
   margin-right: 4px;
 }
 
@@ -143,19 +137,6 @@ tooltip label {
 
 #custom-mic-level.muted {
   opacity: 0.6;
-}
-
-/* Battery - using theme colors */
-#battery {
-  opacity: 0.9;
-}
-
-#battery.warning {
-  color: @color4;
-}
-
-#battery.critical {
-  color: @color5;
 }
 
 /* Sysinfo module */

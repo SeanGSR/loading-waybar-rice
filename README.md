@@ -18,13 +18,13 @@ Inspired by [Dionysus](https://github.com/pewdiepie-archdaemon/dionysus) waybar 
 ## One-Command Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/loading-waybar-rice.git && cd loading-waybar-rice && ./install.sh
+git clone https://github.com/SeanGSR/loading-waybar-rice.git && cd loading-waybar-rice && ./install.sh
 ```
 
 ## Manual Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/loading-waybar-rice.git
+git clone https://github.com/SeanGSR/loading-waybar-rice.git
 cd loading-waybar-rice
 chmod +x install.sh
 ./install.sh
@@ -34,7 +34,7 @@ chmod +x install.sh
 
 - `cava` - Audio visualizer
 - `waybar` - Status bar
-- `pipewire-pulse` / `pulseaudio` - Audio control
+- `pipewire` / `wireplumber` - Audio control (uses wpctl)
 - `lm_sensors` - Temperature monitoring
 - `sox` - Mic level analysis
 - `alsa-utils` - Audio recording (for mic level)
@@ -42,7 +42,7 @@ chmod +x install.sh
 
 Install on Arch:
 ```bash
-sudo pacman -S cava waybar pipewire-pulse lm_sensors sox alsa-utils nvidia-utils
+sudo pacman -S cava waybar pipewire wireplumber lm_sensors sox alsa-utils nvidia-utils
 ```
 
 ## Keybindings

@@ -7,9 +7,9 @@
   "modules-left": ["custom/omarchy", "custom/sysinfo", "group/tray-expander"],
   "modules-center": ["hyprland/workspaces"],
   "modules-right": [
+    "bluetooth",
     "custom/network",
     "custom/mic-level",
-    "bluetooth",
     "custom/cava-volume",
     "custom/battery",
     "clock"
@@ -67,25 +67,6 @@
     "interval": 1,
     "on-click": "omarchy-launch-wifi"
   },
-  "battery": {
-    "format": "[ {icon} {capacity}% ]",
-    "format-discharging": "[ {icon} ]",
-    "format-charging": "[ {icon} ]",
-    "format-plugged": "[  ]",
-    "format-icons": {
-      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-    },
-    "format-full": "[ 󰂅 ]",
-    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
-    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
-    "interval": 5,
-    "on-click": "omarchy-menu power",
-    "states": {
-      "warning": 20,
-      "critical": 10
-    }
-  },
   "bluetooth": {
     "format": "[ 󰂯 ]",
     "format-off": "[ 󰂲 ]",
@@ -109,8 +90,12 @@
   "custom/mic-level": {
     "exec": "~/.config/waybar/scripts/mic-level.sh",
     "return-type": "json",
+    "interval": 1,
     "signal": 11,
-    "on-click": "~/.config/waybar/scripts/mic-toggle.sh"
+    "on-click": "~/.config/waybar/scripts/mic-toggle.sh",
+    "on-click-right": "omarchy-launch-audio",
+    "on-scroll-up": "~/.config/waybar/scripts/mic-volume-up.sh",
+    "on-scroll-down": "wpctl set-volume @DEFAULT_SOURCE@ 5%-"
   },
 
   "custom/battery": {

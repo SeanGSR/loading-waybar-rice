@@ -1,5 +1,6 @@
 #!/bin/bash
-# Cava audio visualizer with horizontal bars + volume display
+# Cava audio visualizer overlapped with volume bar
+# Uses different characters: ▓ for cava, █ for volume above cava, ░ for empty
 # Uses theme colors from Omarchy
 
 # Source theme colors
@@ -33,7 +34,6 @@ get_volume_info() {
   local icon
   if [[ $is_muted == "true" ]]; then
     icon="󰖁"
-    vol_int=0
   elif (( vol_int < 30 )); then
     icon="󰕿"
   elif (( vol_int < 70 )); then
@@ -56,31 +56,54 @@ exec 2>/dev/null
 cava -p "$config_file" 2>/dev/null | while IFS=';' read -ra nums; do
   IFS='|' read -r icon vol_int is_muted class <<< "$(get_volume_info)"
   
+  # Calculate volume level (scaled to 150% = 10 bars)
+  if [[ $is_muted == "true" ]]; then
+    vol_bars=0
+    display_vol="0"
+  else
+    vol_bars=$((vol_int / 15))
+    (( vol_bars > 10 )) && vol_bars=10
+    display_vol="$vol_int"
+  fi
+  
+  # Calculate cava level
   total=0
   for n in "${nums[@]}"; do
     (( total += n ))
   done
   
   if [[ $is_muted == "true" ]]; then
-    filled=0
+    cava_bars=0
   else
-    filled=$(( total * 10 / 70 ))
-    (( filled > 10 )) && filled=10
+    cava_bars=$(( total * 10 / 70 ))
+    (( cava_bars > 10 )) && cava_bars=10
   fi
-  empty=$(( 10 - filled ))
   
+  # Build overlapped bar:
+  # - ▓ (cava active, within volume) - accent color
+  # - █ (volume above cava level) - foreground color  
+  # - ░ (empty, above volume) - dim
   bar=""
-  for ((i=0; i<filled; i++)); do
-    bar+="█"
-  done
-  for ((i=0; i<empty; i++)); do
-    bar+="░"
+  for ((i=1; i<=10; i++)); do
+    if (( i <= vol_bars )); then
+      if (( i <= cava_bars )); then
+        # Cava active within volume range - accent color
+        bar+="<span color='${COLOR_ACCENT}'>▓</span>"
+      else
+        # Volume but no cava - foreground color
+        bar+="<span color='${COLOR_FOREGROUND}'>█</span>"
+      fi
+    else
+      # Empty (above volume level)
+      bar+="<span color='${COLOR_FOREGROUND}'>░</span>"
+    fi
   done
   
+  # Build output
   if [[ $is_muted == "true" ]]; then
-    text="[ <span color='${COLOR_PRIMARY}'>${icon} ${bar} ${vol_int}%</span> ]"
+    text="[ <span color='${COLOR_PRIMARY}'>${icon}</span> ${bar} <span color='${COLOR_PRIMARY}'>${display_vol}%</span> ]"
   else
-    text="[ <span color='${COLOR_ACCENT}'>${icon}</span> <span color='${COLOR_FOREGROUND}'>${bar} ${vol_int}%</span> ]"
+    text="[ <span color='${COLOR_ACCENT}'>${icon}</span> ${bar} <span color='${COLOR_ACCENT}'>${display_vol}%</span> ]"
   fi
   
   printf '{"text": "%s", "class": "%s"}\n' "$text" "$class"
